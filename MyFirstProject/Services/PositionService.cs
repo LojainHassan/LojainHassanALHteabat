@@ -112,4 +112,18 @@ public class PositionService
             return false;  // Handle errors
         }
     }
+    public async Task<bool> CreateRangeAsync(IEnumerable<Position> positions)
+    {
+        try
+        {
+            await _context.Positions.AddRangeAsync(positions);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
 }

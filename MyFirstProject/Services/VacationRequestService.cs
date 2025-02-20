@@ -136,4 +136,19 @@ public class VacationRequestService
         return true;
     }
 
+
+    public async Task<bool> CreateRangeAsync(IEnumerable<VacationRequest> vacationRequests)
+    {
+        try
+        {
+            await _context.VacationRequests.AddRangeAsync(vacationRequests);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
 }

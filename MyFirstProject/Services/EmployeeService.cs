@@ -114,4 +114,19 @@ public class EmployeeService
             return false;
         }
     }
+
+    public async Task<bool> CreateRangeAsync(IEnumerable<Employee> employees)
+    {
+        try
+        {
+            await _context.Employees.AddRangeAsync(employees);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
 }

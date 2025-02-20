@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyFirstProject.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,5 +43,8 @@ namespace MyFirstProject.Contracts
         /// <param name="id">The unique identifier of the entity to be deleted.</param>
         /// <returns>True if the operation is successful, otherwise false.</returns>
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> CreateRangeAsync(IEnumerable<T> entities);
+
     }
 }

@@ -112,4 +112,18 @@ public class VacationTypeService
             return false;  // Handle errors
         }
     }
+
+    public async Task<bool> CreateRangeAsync(IEnumerable<VacationType> vacationTypes)
+    {
+        try
+        {
+            await _context.VacationTypes.AddRangeAsync(vacationTypes);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }

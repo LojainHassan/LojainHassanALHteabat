@@ -112,4 +112,18 @@ public class RequestStateService
             return false;  // Handle errors
         }
     }
+
+    public async Task<bool> CreateRangeAsync(IEnumerable<RequestState> requestStates)
+    {
+        try
+        {
+            await _context.RequestStates.AddRangeAsync(requestStates);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }

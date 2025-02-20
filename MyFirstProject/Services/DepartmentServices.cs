@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyFirstProject.Models;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace MyFirstProject.Services;
 
@@ -112,4 +113,47 @@ public class DepartmentServices
             return false;  // Handle errors
         }
     }
+    public async Task<bool> CreateRangeAsync(IEnumerable<Department> departments)
+    {
+        try
+        {
+            await _context.Departments.AddRangeAsync(departments);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task Add20Departments()
+    {
+        List<Department> departments = new List<Department>
+    {
+        new Department { DepartmentName = "HR" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "IT" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Finance" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Marketing",CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Operations" , CreationTime = DateTime.Now,IsDeleted=false},
+        new Department { DepartmentName = "Sales" ,CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Customer Support" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Engineering" , CreationTime = DateTime.Now,IsDeleted=false},
+        new Department { DepartmentName = "Product Management",CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Legal" ,CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "R&D",CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Security",CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Data Science" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Design" ,CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Logistics" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Quality Assurance",CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Procurement" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Public Relations" ,CreationTime =DateTime.Now ,IsDeleted=false},
+        new Department { DepartmentName = "Corporate Strategy",CreationTime =DateTime.Now ,IsDeleted=false },
+        new Department { DepartmentName = "Compliance" ,CreationTime =DateTime.Now ,IsDeleted=false}
+    };
+        await _context.Departments.AddRangeAsync(departments);
+        await _context.SaveChangesAsync();
+    }
+
 }
