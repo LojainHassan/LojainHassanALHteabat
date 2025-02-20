@@ -28,7 +28,7 @@ class Program
             ///1.Add about new 20 departments by use DB context and one save changes to
             ///database.
             DepartmentServices departmentService = new DepartmentServices(context);
-        
+           await departmentService.Add20Departments();
 
         }
         Console.WriteLine("Application has started.");
