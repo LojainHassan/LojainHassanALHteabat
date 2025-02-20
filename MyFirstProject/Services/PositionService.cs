@@ -125,5 +125,34 @@ public class PositionService
             return false;
         }
     }
+    public async Task Add20Positions()
+    {
+        List<Position> positions = new List<Position>
+    {
+        new Position { PositionName = "CEO", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "CTO", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "CFO", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "COO", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "CMO", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "VP of Engineering", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "VP of Sales", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "VP of Marketing", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "VP of HR", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "HR Manager", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Software Engineer", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "QA Engineer", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Product Manager", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Business Analyst", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "UX Designer", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "DevOps Engineer", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "System Administrator", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Data Scientist", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Security Analyst", CreationTime = DateTime.Now, IsDeleted = false },
+        new Position { PositionName = "Technical Support", CreationTime = DateTime.Now, IsDeleted = false }
+    };
+
+        await _context.Positions.AddRangeAsync(positions);
+        await _context.SaveChangesAsync();
+    }
 
 }

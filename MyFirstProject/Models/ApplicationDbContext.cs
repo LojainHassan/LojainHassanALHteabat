@@ -9,6 +9,10 @@ namespace MyFirstProject.Models;
 /// </summary>
 public class ApplicationDbContext : DbContext
 {
+    public ApplicationDbContext()
+    {
+    }
+
     /// <summary>
     /// Initializes a new instance of ApplicationDbContext with the specified options.
     /// </summary>

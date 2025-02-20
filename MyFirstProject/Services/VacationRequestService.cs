@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MyFirstProject.Models.Enum;
+using MyFirstProject.Contracts.Dto;
 
 namespace MyFirstProject.Services;
 
@@ -150,5 +151,43 @@ public class VacationRequestService
             return false;
         }
     }
+
+    public async Task<bool> ApproveVacationRequestAsync(int requestId)
+    {
+        
+            return false;
+        
+    }
+
+    public async Task<bool> DeclineVacationRequestAsync(int requestId)
+    {
+       
+            return false;
+        
+    }
+    // Method to get all pending vacation requests
+    public async Task<IEnumerable<VacationRequestDto>> GetPendingRequestsAsync()
+    {
+        var result = await (from vacationRequest in _context.VacationRequests
+                            join employee in _context.Employees on vacationRequest.EmployeeNumber equals employee.EmployeeNumber
+                            where vacationRequest.RequestStateId == 1 // Assuming 1 represents "Pending"
+                            select new VacationRequestDto
+                            {
+                                RequestId = vacationRequest.RequestId,
+                                RequestSubmissionDate = vacationRequest.RequestSubmissionDate,
+                                Description = vacationRequest.Description,
+                                StartDate = vacationRequest.StartDate,
+                                EndDate = vacationRequest.EndDate,
+                                TotalVacationDays = vacationRequest.TotalVacationDays,
+                                RequestStateId = vacationRequest.RequestStateId,
+                                ApprovedByEmployeeNumber = vacationRequest.ApprovedByEmployeeNumber,
+                                DeclinedByEmployeeNumber = vacationRequest.DeclinedByEmployeeNumber,
+                                EmployeeName = employee.EmployeeName, // You can select other employee properties here
+                                EmployeePosition = employee.Position.PositionName // Assuming Position is a related entity
+                            }).ToListAsync();
+
+        return result;
+    }
+
 
 }
