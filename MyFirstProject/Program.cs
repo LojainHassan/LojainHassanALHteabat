@@ -102,7 +102,7 @@ a.Approve vacation request by call method: Approve
 b.Decline vacation request by call method: Decline * */
 
 
-            VacationRequestService vacationRequestService = new VacationRequestService(context);
+            /*VacationRequestService vacationRequestService = new VacationRequestService(context);
             await vacationRequestService.CreateAsync(new VacationRequest()
             {
                 RequestSubmissionDate = DateTime.Now, // current date/time
@@ -133,10 +133,19 @@ b.Decline vacation request by call method: Decline * */
                 Console.WriteLine($"Approved By: {request.ApprovedByEmployeeNumber ?? "Not approved yet"}");
                 Console.WriteLine($"Declined By: {request.DeclinedByEmployeeNumber ?? "Not declined yet"}");
                 Console.WriteLine("-------------------------------------------------------------");
+            }*/
+            var employeeData = await employeeService.GetAllEmployeesWithDetailsAsync(100, 0);
+
+            foreach (var employeedto in employeeData)
+            {
+                Console.WriteLine($"Employee Number: {employeedto.EmployeeNumber}");
+                Console.WriteLine($"Full Name: {employeedto.FullName}");
+                Console.WriteLine($"Department: {employeedto.DepartmentName}");
+                Console.WriteLine($"Salary: {employeedto.Salary}");
+                Console.WriteLine("--------------------------------------");
             }
-
-
         }
+
         Console.WriteLine("Application has started.");
         Console.ReadKey();
     }

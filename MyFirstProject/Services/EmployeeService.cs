@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyFirstProject.Contracts.Dto;
 
 namespace MyFirstProject.Services;
 
@@ -165,6 +166,23 @@ public class EmployeeService
         {
             return false; // Handle any exceptions here
         }
+    }
+
+    public async Task<List<EmployeeDto>> GetAllEmployeesWithDetailsAsync(int take, int offset)
+    {
+        return await _context.Employees
+            .Include(e => e.Department)  // Include related Department data
+            .OrderBy(e => e.EmployeeNumber) // Ensure consistent ordering
+            .Skip(offset) // Skip 'offset' number of records
+            .Take(take) // Take 'take' number of records
+            .Select(e => new EmployeeDto
+            {
+                EmployeeNumber = e.EmployeeNumber,
+                FullName = e.EmployeeName, // Assuming you have EmployeeName
+                DepartmentName = e.Department != null ? e.Department.DepartmentName : string.Empty, // Handle null safely
+                Salary = e.Salary
+            })
+            .ToListAsync();
     }
 
 
