@@ -14,6 +14,8 @@ using MyFirstProject.Contracts;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
@@ -134,6 +136,12 @@ b.Decline vacation request by call method: Decline * */
                 Console.WriteLine($"Declined By: {request.DeclinedByEmployeeNumber ?? "Not declined yet"}");
                 Console.WriteLine("-------------------------------------------------------------");
             }*/
+            /*Fourth Objectivev : 
+             * Question1:
+            Get all employees in database and display employee number, name,
+          department and salary.
+          
+            */
             var employeeData = await employeeService.GetAllEmployeesWithDetailsAsync(100, 0);
 
             foreach (var employeedto in employeeData)
@@ -144,6 +152,39 @@ b.Decline vacation request by call method: Decline * */
                 Console.WriteLine($"Salary: {employeedto.Salary}");
                 Console.WriteLine("--------------------------------------");
             }
+
+            /*Fourth Objective : 
+            Create method to Get employee by his unique number to return data as below
+(check figure):
+a. Employee number
+b. Employee name
+c. Department name
+d. Position name
+e. Reported to employee name.
+f. Total vacation days left*/
+
+            var uniqueEmployee =  await employeeService.GetEmployeeByNumberAsync("EMP009");
+
+            /*
+             Use LINQ to Create method to get all employees have one or more pending
+             vacation requests.
+             */
+
+            var allEmployeeWithmorePending = await employeeService.GetEmployeesWithPendingVacationsAsync();
+
+            /*
+             Use LINQ to get all history vacation requests (approved requests) for
+employee with return data as below:
+a. Vacation type
+b. Vacation description
+c. Request duration & total vacation days
+d. Approved by employee name
+            */
+
+            var historyVactionnRequest = await employeeService.GetApprovedVacationRequestsHistoryAsync("Emp0010");
+
+            var pendingRequests = await employeeService.GetPendingVacationRequestsAsync("EMP002");
+
         }
 
         Console.WriteLine("Application has started.");

@@ -185,5 +185,91 @@ public class EmployeeService
             .ToListAsync();
     }
 
+    public async Task<EmployeeDetailsDto> GetEmployeeByNumberAsync(string employeeNumber)
+    {
+        var result = await (from e in _context.Employees
+                            join d in _context.Departments on e.DepartmentId equals d.DepartmentId
+                            join p in _context.Positions on e.PositionId equals p.PositionId
+                            join r in _context.Employees on e.ReportedToEmployeeNumber equals r.EmployeeNumber into reporting
+                            from manager in reporting.DefaultIfEmpty() // Left join to include employees without a manager
+                            where e.EmployeeNumber == employeeNumber
+                            select new EmployeeDetailsDto
+                            {
+                                EmployeeNumber = e.EmployeeNumber,
+                                FullName = e.EmployeeName,
+                                DepartmentName = d.DepartmentName,
+                                PositionName = p.PositionName,
+                                ReportedToEmployeeName = manager != null ? manager.EmployeeName : String.Empty,
+                                TotalVacationDaysLeft = e.VacationDaysLeft
+                            }).FirstOrDefaultAsync();
+
+        return result;
+    }
+    public async Task<List<EmployeeDetailsDto>> GetEmployeesWithPendingVacationsAsync()
+    {
+        var result = await (from e in _context.Employees
+                            join v in _context.VacationRequests
+                                on e.EmployeeNumber equals v.EmployeeNumber
+                            where v.RequestStateId == 1  // Pending requests
+                            select new EmployeeDetailsDto
+                            {
+                                EmployeeNumber = e.EmployeeNumber,
+                                FullName = e.EmployeeName,
+                                DepartmentName = e.Department.DepartmentName,
+                                PositionName = e.Position.PositionName,
+                                TotalVacationDaysLeft = e.VacationDaysLeft
+                            })
+                            .Distinct() // Ensure each employee appears only once
+                            .ToListAsync();
+
+        return result;
+    }
+
+    public async Task<List<VacationHistoryDto>> GetApprovedVacationRequestsHistoryAsync(string employeeNumber)
+    {
+        var result = await (from v in _context.VacationRequests
+                            join e in _context.Employees
+                                on v.EmployeeNumber equals e.EmployeeNumber
+                            join approver in _context.Employees
+                                on v.ApprovedByEmployeeNumber equals approver.EmployeeNumber
+                            where v.EmployeeNumber == employeeNumber
+                                  && v.RequestStateId == 2  // Approved requests
+                            select new VacationHistoryDto
+                            {
+                                VacationType = v.VacationTypeCode,
+                                Description = v.Description,
+                                RequestDuration = $"{v.StartDate.ToString("yyyy-MM-dd")} to {v.EndDate.ToString("yyyy-MM-dd")}",
+                                TotalVacationDays = v.TotalVacationDays,
+                                ApprovedBy = approver.EmployeeName
+                            })
+                            .ToListAsync();
+
+        return result;
+    }
+
+    public async Task<List<PendingVacationRequestDto>> GetPendingVacationRequestsAsync(string employeeNumber)
+    {
+        var result = await (from v in _context.VacationRequests
+                            join e in _context.Employees
+                                on v.EmployeeNumber equals e.EmployeeNumber
+                            where v.RequestStateId == 1  // Pending requests
+                                  && v.ApprovedByEmployeeNumber == null // Only requests that need action
+                            select new PendingVacationRequestDto
+                            {
+                                Description = v.Description,
+                                EmployeeNumber = e.EmployeeNumber,
+                                EmployeeName = e.EmployeeName,
+                                SubmittedOn = v.RequestSubmissionDate.ToString("yyyy-MM-dd"),
+                                VacationDuration = $"{(v.EndDate - v.StartDate).Days} days",
+                                StartDate = v.StartDate.ToString("yyyy-MM-dd"),
+                                EndDate = v.EndDate.ToString("yyyy-MM-dd"),
+                                EmployeeSalary = e.Salary
+                            })
+                            .ToListAsync();
+
+        return result;
+    }
+
+
 
 }
