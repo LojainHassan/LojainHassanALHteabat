@@ -49,8 +49,8 @@ public class VacationRequest:RootModel
     public int RequestStateId { get; set; }
 
     // Approved by employee number: The employee number of the one who approved the request, nullable
-    public string ApprovedByEmployeeNumber { get; set; }
+    public string? ApprovedByEmployeeNumber { get; set; }
 
     // Declined by employee number: The employee number of the one who declined the request, nullable
-    public string DeclinedByEmployeeNumber { get; set; }
+    public string? DeclinedByEmployeeNumber { get; set; }
 }

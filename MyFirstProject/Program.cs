@@ -112,8 +112,7 @@ b.Decline vacation request by call method: Decline * */
                 StartDate = new DateTime(2025, 5, 1), // Start date of the vacation
                 EndDate = new DateTime(2025, 5, 7), // End date of the vacation
                 RequestStateId = 1, // assuming '1' represents 'Pending' state
-                ApprovedByEmployeeNumber = null, // Not approved yet
-                DeclinedByEmployeeNumber = null // Not declined yet
+        
             });
 
             var pendingRequests = await vacationRequestService.GetPendingRequestsAsync();
